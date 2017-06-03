@@ -8,8 +8,7 @@ Created on Fri Jun  2 23:14:23 2017
 import numpy as np
 import pandas as pd
 import scipy as sp
-import sklearn as sk
-import neurolab as nl
+import sklearn as skimport neurolab as nl
 import matplotlib.pyplot as plt #记住要用pyplot这个子模块
 import xlrd as xlsrd
 
@@ -37,7 +36,7 @@ class Data_Wash():
         frame_Dupicated=frame.iloc[abc[abc==True].index]
         return frame,frame_NoDupicated,frame_Dupicated
 test=Data_Wash()
-data,data_nodup,data_dup=test.xlsread('C:/Users/zy/Documents/天业13#机组数据(sql).xlsx')
+data,data_nodup,data_dup=test.xlsread('C:/Users/zy/Documents/13#机组数据(sql).xlsx')
 
 class Graph():
     def graph_line(self,chart_title,x_label,y_name,y_data):
