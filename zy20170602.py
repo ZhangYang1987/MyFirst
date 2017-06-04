@@ -10,9 +10,15 @@ import pandas as pd
 import scipy as sp
 import sklearn as sk
 import neurolab as nl
-import matplotlib.pyplot as plt #记住要用pyplot这个子模块
+import matplotlib.pyplot as plt
+import matplotlib.mlab as mlab
 import xlrd as xlsrd
-
+import pygal
+import os
+import math
+from pylab import mpl
+from matplotlib import gridspec 
+mpl.rcParams['font.sans-serif'] = ['SimHei']
 class Data_Wash():
     def xlsread(self,path):
         data=xlsrd.open_workbook(path)
@@ -37,7 +43,8 @@ class Data_Wash():
         frame_Dupicated=frame.iloc[abc[abc==True].index]
         return frame,frame_NoDupicated,frame_Dupicated
 test=Data_Wash()
-data,data_nodup,data_dup=test.xlsread('C:/Users/zy/Documents/天业13#机组数据(sql).xlsx')
+data,data_nodup,data_dup=test.xlsread('C:/Users/zy/Documents/13#机组数据(sql).xlsx')
+
 
 class Graph():
     def graph_line(self,chart_title,x_label,y_name,y_data):
@@ -57,6 +64,55 @@ class Graph():
             b.append(a)
         histogram.add(y_name, b)
         histogram.render_to_file('hist.html')
+        
+    def single_hist(self,x,n_bins,title):
+        #fig,ax= plt.subplots()
+        plt.hist(x,n_bins)
+        plt.title(title)        
+        plt.savefig("test.svg", format="svg")
+        plt.show()
+        
+    def multi_hist(self,x,n_bins,labels,colors):
+        num_ax=len(x.columns)
+        nrows=2
+        ncols=3
+        fig, axes = plt.subplots(nrows=nrows, ncols=ncols,figsize=(15,8))
+        if num_ax<=3:
+            nrows=1
+            ncols=num_ax
+            fig, axes = plt.subplots(nrows=nrows, ncols=ncols)
+        elif num_ax==4:
+            nrows=2
+            ncols=2
+            fig, axes = plt.subplots(nrows=nrows, ncols=ncols)
+        elif num_ax==5|6:
+            nrows=2
+            ncols=3
+            fig, axes = plt.subplots(nrows=nrows, ncols=ncols)
+        elif num_ax==7|8:
+            nrows=2
+            ncols=4
+            fig, axes = plt.subplots(nrows=nrows, ncols=ncols)  
+        a=[]
+        for i in range(nrows):
+            for j in range(ncols):
+                a.append(axes[i,j])
+#        ax0, ax1, ax2, ax3, ax4,ax5 = axes.flatten()
+#        a=list([ax0,ax1,ax2,ax3,ax4])
+        for i in range(num_ax):
+            a[i].hist([x[i]],n_bins,color=colors[i])#https://stackoverflow.com/questions/19523563/python-typeerror-int-object-is-not-iterable
+            a[i].set_title(labels[i])
+        lab='异常数据','重复数据','有效数据'
+        sizes=[0,1459,7211]
+        explode = (0.1, 0.1, 0.1)
+        a[5].pie(sizes, explode=explode, labels=lab, autopct='%1.1f%%',\
+                 shadow=True, startangle=90,data=True)
+        a[5].axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        fig.tight_layout()
+        plt.savefig("multi_hist_test.svg", format="svg")
+        plt.show()
+
+
 
 chart_title='进汽量'
 #x_label=map(str,list(data[0][1:100].index))
@@ -64,9 +120,10 @@ y_name='进汽量'
 #y_data=list(data[0][1:100])
 #
 g=Graph()
+#g.single_hist(data_nodup[0],10,chart_title)
+colors=['tomato','tan','peru','teal','olive']
+labels=['进汽量','进汽温度','进汽压力','实发功率','抽汽量']
+g.multi_hist(data_nodup,10,labels,colors)
 #g.graph_line(chart_title,x_label,y_name,y_data)
-hist,bin_edges=np.histogram(data_nodup[0],5)
-g.graph_bar(chart_title,y_name,hist,bin_edges)
-
-
-
+#hist,bin_edges=np.histogram(data_nodup[0],10)
+#g.graph_bar(chart_title,y_name,hist,bin_edges)
