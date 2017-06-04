@@ -8,10 +8,15 @@ Created on Fri Jun  2 23:14:23 2017
 import numpy as np
 import pandas as pd
 import scipy as sp
+<<<<<<< HEAD
 import sklearn as sk
 import neurolab as nl
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
+=======
+import sklearn as skimport neurolab as nl
+import matplotlib.pyplot as plt #记住要用pyplot这个子模块
+>>>>>>> 6d9154569866d6f6cf3338fc15784d358a610faa
 import xlrd as xlsrd
 import pygal
 import os
@@ -44,7 +49,10 @@ class Data_Wash():
         return frame,frame_NoDupicated,frame_Dupicated
 test=Data_Wash()
 data,data_nodup,data_dup=test.xlsread('C:/Users/zy/Documents/13#机组数据(sql).xlsx')
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6d9154569866d6f6cf3338fc15784d358a610faa
 
 class Graph():
     def graph_line(self,chart_title,x_label,y_name,y_data):
