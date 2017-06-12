@@ -13,6 +13,7 @@ import sklearn as sk
 from sklearn.feature_selection import f_regression
 from sklearn.decomposition import PCA
 from sklearn import preprocessing
+import sklearn.datasets as sk_dataset
 import neurolab as nl
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
@@ -65,18 +66,20 @@ class Data_Wash():
             target_names.append(labels[i]+","+str(density[i]))
         #计算target
         target=[]
-        for index,item in enumerate(a):
+        for index,item in enumerate(discretization):
             if item==bin_edges[bins]:
                 target.append(mark[bins-1])
             for i in range(len(bin_edges)-1):
                 if item>=bin_edges[i] and item<bin_edges[i+1]:
                     target.append(mark[i])
         #创建字典
-        n_dic=dict(data=data_nodup,feature_names=["主蒸汽流量","主蒸汽温度",\
+#        n_dic=dict(data=data_nodup,feature_names=["主蒸汽流量","主蒸汽温度",\
+#                                          "主蒸汽压力","机组实发功率","热网抽汽流量"],\
+#                                        target=target,target_names=target_names)
+        dataset=sk_dataset.base.Bunch(data=x,feature_names=["主蒸汽流量","主蒸汽温度",\
                                           "主蒸汽压力","机组实发功率","热网抽汽流量"],\
                                         target=target,target_names=target_names)
-        
-        return n_dic
+        return dataset
             
             
 
@@ -209,68 +212,66 @@ class Save():
 ##原始数据区
 test=Data_Wash()
 data,data_nodup,data_dup=test.xlsread('C:/Users/zy/Documents/13#机组数据(sql).xlsx')
+#
+#
+#    
+###基础统计分析区
+##B_Stats=Base_Statistics()
+##F,p=B_Stats.f_res(data_nodup.iloc[:,1:5],data_nodup[0])
+##components,explained_variance,explained_variance_ratio,n_components,\
+##                mean,noise_variance,newData=B_Stats.pca(data_nodup.iloc[0:500,1:5])
+##D,p=B_Stats.k_s(data_nodup[3])
+##mean,std,scaler_trans=B_Stats.Z_score(data_nodup)
+##mx_scaler=B_Stats.MinMax(data_nodup)
 
 
-    
-##基础统计分析区
-B_Stats=Base_Statistics()
-#F,p=B_Stats.f_res(data_nodup.iloc[:,1:5],data_nodup[0])
-#components,explained_variance,explained_variance_ratio,n_components,\
-#                mean,noise_variance,newData=B_Stats.pca(data_nodup.iloc[0:500,1:5])
-#D,p=B_Stats.k_s(data_nodup[3])
-#mean,std,scaler_trans=B_Stats.Z_score(data_nodup)
-#mx_scaler=B_Stats.MinMax(data_nodup)
-
-##发电蒸汽单耗
+#决策树
+###发电蒸汽单耗
 a=data_nodup[3]/(data_nodup[0]-data_nodup[4])
-
-#计算频率分布
-#hist,bin_edges=B_Stats.histogram(a,10)
-
-#计算每个段的频率
-#b=list(hist/hist.sum())
-
-#为每个段设置标签
+#
+##计算频率分布
+##hist,bin_edges=B_Stats.histogram(a,10)
+#
+##计算每个段的频率
+##b=list(hist/hist.sum())
+#
+##为每个段设置标签
 c=["A+","A","A-","B+","B","B-","C+","C","C-","D"]
+#
+dataset=test.preprocessing_for_tree(data_nodup,a,10,c)
 
-#n_dic=test.preprocessing_for_tree(data_nodup,a,10,c)
-
-save=Save()
-save.save_as_dict(n_dic)
+#save=Save()
+#save.save_as_dict(n_dic)
 #a=save_json.save_as_json(n_dic)
-
-
+#from sklearn.datasets import load_iris
+#iris = load_iris()
 
 #from sklearn import tree 
 #from sklearn.tree import export_graphviz
-#from sklearn.datasets import load_iris
-##iris=load_iris()
-##
-#iris = load_iris()
 #clf = tree.DecisionTreeClassifier()
-#clf = clf.fit(data_nodup.iloc[:,0:5], data_nodup[6])
-### export the tree in Graphviz format using the export_graphviz exporter
-##with open("iris.dot", 'w') as f:
-##    f=tree.export_graphviz(clf, out_file=f)
-##    
-### predict the class of samples
-##clf.predict(iris.data[:1, :])
-### the probability of each class
-##clf.predict_proba(iris.data[:1, :])    
-##os.unlink('iris.dot')
+#clf = clf.fit(dataset.data, dataset.target)
+#with open("dataset.dot", 'w') as f:
+#    f = tree.export_graphviz(clf, out_file=f)
+#os.unlink('dataset.dot')
 #os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 #import pydotplus 
 #dot_data = tree.export_graphviz(clf, out_file=None) 
 #graph = pydotplus.graph_from_dot_data(dot_data) 
-#graph.write_pdf("zy0611.pdf") 
+#graph.write_pdf("dataset.pdf") 
 #from IPython.display import Image  
-#dot_data = tree.export_graphviz(clf, out_file=None, 
-#                                feature_names=iris.feature_names,  
-#                                class_names=iris.target_names,  
-#                                filled=True, rounded=True,  
-#                                special_characters=True) 
+#dot_data = tree.export_graphviz(clf, out_file=None,
+#                                feature_names=dataset.feature_names,
+#                                class_names=dataset.target_names, 
+#                                filled=True, rounded=True, 
+#                                special_characters=True)
 #graph = pydotplus.graph_from_dot_data(dot_data)  
-#Image(graph.create_png())  
+#Image(graph.create_png())
+
+#用决策树进行预测 
+#x=np.array([867.567688,533.920044,14.061001,272.029327,27.75]).reshape(1,-1) 
+#clf.predict_proba(x)
+
+ 
 
 
 
