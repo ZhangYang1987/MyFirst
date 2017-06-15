@@ -210,8 +210,8 @@ class Save():
         file.close()
 
 ##原始数据区
-test=Data_Wash()
-data,data_nodup,data_dup=test.xlsread('C:/Users/zy/Documents/13#机组数据(sql).xlsx')
+#test=Data_Wash()
+#data,data_nodup,data_dup=test.xlsread('C:/Users/zy/Documents/13#机组数据(sql).xlsx')
 #
 #
 #    
@@ -236,9 +236,9 @@ a=data_nodup[3]/(data_nodup[0]-data_nodup[4])
 ##b=list(hist/hist.sum())
 #
 ##为每个段设置标签
-c=["A+","A","A-","B+","B","B-","C+","C","C-","D"]
+#c=["A+","A","A-","B+","B","B-","C+","C","C-","D"]
 #
-dataset=test.preprocessing_for_tree(data_nodup,a,10,c)
+#dataset=test.preprocessing_for_tree(data_nodup,a,10,c)
 
 #save=Save()
 #save.save_as_dict(n_dic)
@@ -271,9 +271,17 @@ dataset=test.preprocessing_for_tree(data_nodup,a,10,c)
 #x=np.array([867.567688,533.920044,14.061001,272.029327,27.75]).reshape(1,-1) 
 #clf.predict_proba(x)
 
- 
 
+#随机森林回归将特征按照重要程度排序
+from sklearn.ensemble import RandomForestRegressor
 
+X=dataset.data
+Y=a
+names=dataset.feature_names
+rf=RandomForestRegressor()
+rf.fit(X,Y)
+print("Features sorted by their score:")
+print(sorted(zip(map(lambda x: round(x,4),rf.feature_importances_),names),reverse=True))
 
 """
 ##作图区
