@@ -8,7 +8,7 @@ Created on Fri Jun  2 23:14:23 2017
 import numpy as np
 import pandas as pd
 import scipy as sp
-from scipy.stats import kstest
+import scipy.stats as sts
 import sklearn as sk
 from sklearn.feature_selection import f_regression
 from sklearn.decomposition import PCA
@@ -152,6 +152,61 @@ class Graph():
 
 class Base_Statistics():
     
+    #描述性统计
+    def descriptive_statistics(self,x):
+        
+        #集中趋势的度量
+        
+        #均值
+        mean=np.mean(x)
+        
+        #中位数
+        median=np.median(x,axis=0)
+        
+        #众数
+        mode=sts.mode(x)
+        
+        #上四分位数Q1
+        Q1=x.quantile(0.25)
+        
+        
+        #下四分位数Q1
+        Q2=x.quantile(0.75)
+        
+        
+        #离散趋势的度量
+        
+        #最大值
+        mx=np.max(x)
+        
+        #最小值
+        mn=np.min(x)
+        
+        #四分位差
+        IQR=Q2-Q1
+        
+        #极差
+        ptp=np.ptp(np.array(x),axis=0)
+        
+        #方差
+        var=np.var(x)
+        
+        #标准差
+        std=np.std(x)
+        
+        #离散系数
+        cv=std/mean
+        
+        
+        #峰度  
+        kurtosis=sts.kurtosis(x)
+        
+        #偏度
+        skewness=sts.skew(x)
+        
+        return mean,median,mode,Q1,Q2,mx,mn,IQR,ptp,var,std,cv,kurtosis,skewness
+    
+    
     #频率分布计算
     def histogram(self,x,bins):
         hist,bin_edges=np.histogram(x,bins=bins)
@@ -179,7 +234,7 @@ class Base_Statistics():
     
     #数据是否正态分布的检验
     def k_s(self,x):
-        D,p=kstest(x,'norm')
+        D,p=sts.kstest(x,'norm')
         return D,p
     
     #Z标准化,也叫标准差标准化
@@ -216,7 +271,9 @@ class Save():
 #
 #    
 ###基础统计分析区
-##B_Stats=Base_Statistics()
+B_Stats=Base_Statistics()
+mean,median,mode,Q1,Q2,mx,mn,IQR,ptp,var,std,cv,kurtosis,skewness\
+=B_Stats.descriptive_statistics(data_nodup)
 ##F,p=B_Stats.f_res(data_nodup.iloc[:,1:5],data_nodup[0])
 ##components,explained_variance,explained_variance_ratio,n_components,\
 ##                mean,noise_variance,newData=B_Stats.pca(data_nodup.iloc[0:500,1:5])
@@ -227,7 +284,7 @@ class Save():
 
 #决策树
 ###发电蒸汽单耗
-a=data_nodup[3]/(data_nodup[0]-data_nodup[4])
+#a=data_nodup[3]/(data_nodup[0]-data_nodup[4])
 #
 ##计算频率分布
 ##hist,bin_edges=B_Stats.histogram(a,10)
@@ -273,15 +330,15 @@ a=data_nodup[3]/(data_nodup[0]-data_nodup[4])
 
 
 #随机森林回归将特征按照重要程度排序
-from sklearn.ensemble import RandomForestRegressor
-
-X=dataset.data
-Y=a
-names=dataset.feature_names
-rf=RandomForestRegressor()
-rf.fit(X,Y)
-print("Features sorted by their score:")
-print(sorted(zip(map(lambda x: round(x,4),rf.feature_importances_),names),reverse=True))
+#from sklearn.ensemble import RandomForestRegressor
+#
+#X=dataset.data
+#Y=a
+#names=dataset.feature_names
+#rf=RandomForestRegressor()
+#rf.fit(X,Y)
+#print("Features sorted by their score:")
+#print(sorted(zip(map(lambda x: round(x,4),rf.feature_importances_),names),reverse=True))
 
 """
 ##作图区
