@@ -8,6 +8,9 @@ Created on Mon Jun 26 20:57:28 2017
 import sys
 from PyQt5 import QtCore,uic
 from PyQt5 import QtWidgets
+#from PyQt5.QtGui import *
+from PyQt5 import QtGui
+
 
 import xlrd as xlsrd
 import numpy as np
@@ -38,6 +41,7 @@ Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
 class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     feature_names=[]
+    data_nodup=[]
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
@@ -53,6 +57,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 #        total_price_string = "The total price with tax is: " + str(total_price)
 #        self.results_window.setText(total_price_string)
         self.feature_names=DW.xlsxread('13#机组数据(sql).xlsx')
+        
         for i in range(len(self.feature_names)):
             self.comboBox.addItem(self.feature_names[i])    
         
@@ -60,14 +65,28 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def add_head(self):
 #        qList = QtCore.QStringList(['a','b','c']) Qt5已经不支持，因为Qt是C++实现的，所以有List等概念的对象。但对于PyQt，因为Python本身支持List等，所以就没有这个对象了
-        qlist=[]
+        qlist=["项目"]
         for i in range(len(self.feature_names)):
             qlist.append(self.feature_names[i])
        
         self.tableWidget.setHorizontalHeaderLabels(qlist)
+        items=['计数','均值','标准差','最小值','最大值','中位数',\
+               '上四分位数','下四分位数','离散系数','峰度','偏度',]
+        
+        DW=Data_Wash()
+        data,self.data_nodup,data_dup=DW.xlsread('13#机组数据(sql).xlsx')
+        count,mean,std,mn,mx,per25,per50,per75,cv,kurtosis,skewness=DW.descriptive_statistics(self.data_nodup)
+        stats=[count,mean,std,mn,mx,per25,per50,per75,cv,kurtosis,skewness]
+        for i in range(len(items)):                   
+            self.newItem = QtWidgets.QTableWidgetItem(items[i])
+            self.tableWidget.setItem(i,0,self.newItem)
+            for j in range(len(mean)):
+                self.newItem = QtWidgets.QTableWidgetItem(str(stats[i][j]))
+                self.tableWidget.setItem(i,j+1,self.newItem)
         
         
-#        
+
+        
 
 class Data_Wash():
     
@@ -100,6 +119,28 @@ class Data_Wash():
         frame_NoDupicated=frame.iloc[abc[abc==False].index]
         frame_Dupicated=frame.iloc[abc[abc==True].index]
         return frame,frame_NoDupicated,frame_Dupicated
+    
+    
+    def descriptive_statistics(self,x):
+        #DataFrame自带描述性统计的方法
+        des=x.describe()
+        count=des.loc['count']
+        mean=des.loc['mean']
+        std=des.loc['std']
+        mn=des.loc['min']
+        per25=des.loc['25%']
+        per50=des.loc['50%']
+        per75=des.loc['75%']
+        mx=des.loc['max']        
+        #离散系数
+        cv=std/mean        
+        #峰度  
+        kurtosis=sts.kurtosis(x)        
+        #偏度
+        skewness=sts.skew(x)
+        
+        return count,mean,std,mn,mx,per25,per50,per75,cv,kurtosis,skewness
+#        return des,cv,kurtosis,skewness
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
