@@ -5,7 +5,8 @@
 #-------------------------------------------------
 
 QT       += core gui
-
+QT       += webkitwidgets
+QT +=network #Qt5中webkit模块已经更改为webkitwidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = zy20170626
