@@ -625,6 +625,24 @@
       <string>绘图</string>
      </property>
     </widget>
+    <widget class="QRadioButton" name="radioButton_boxplot">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>70</y>
+       <width>89</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>箱形图</string>
+     </property>
+    </widget>
    </widget>
    <zorder>webView</zorder>
    <zorder>tableWidget</zorder>

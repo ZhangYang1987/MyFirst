@@ -11,7 +11,7 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 from PyQt5 import QtWebKitWidgets 
 from sklearn.ensemble import RandomForestRegressor
-
+from sklearn import preprocessing
 import xlrd as xlsrd
 import numpy as np
 import pandas as pd
@@ -52,9 +52,9 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pushButton_select_X_2.clicked.connect(self.randforest_delete_X)
         self.pushButton_RandForest.clicked.connect(self.randforest_cal)
         self.read_xlsx.clicked.connect(self.read_xls)
-        self.pushButton_figure.clicked.connect(self.figure)
-        
+        self.pushButton_figure.clicked.connect(self.figure)        
         self.radioButton_hist.toggled.connect(self.figure_type_get)
+        self.radioButton_boxplot.toggled.connect(self.figure_type_get)
         
 #            
         
@@ -70,19 +70,31 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def figure_type_get(self):
         if self.radioButton_hist.isChecked():
             self.figure_type=self.radioButton_hist.text()
+        elif self.radioButton_boxplot.isChecked():
+            self.figure_type=self.radioButton_boxplot.text()
         else:
             self.figure_type=""
+        
 
     def figure(self):
         graph=Graph()
         if (self.figure_type=="频率分布直方图"):
             labels=self.feature_names
             colors=['tomato','tan','peru','teal','olive']
-            graph.multi_hist(self.data_nodup,10,labels,colors)
-            self.view=QtWebKitWidgets.QWebView()
-            self.view.setWindowTitle(self.figure_type)
-            self.view.load(QtCore.QUrl("file:///C:/Users/zy/python_practice/QT/zy20170626/zy20170626/multi_hist_test.svg"))
-            self.view.showNormal()
+            graph.multi_hist(self.data_nodup,10,labels,colors,self.num_invalid,self.num_duplicated,self.num_valid)
+            self.view1=QtWebKitWidgets.QWebView()
+            self.view1.setWindowTitle(self.figure_type)
+            self.view1.load(QtCore.QUrl("file:///C:/Users/zy/python_practice/QT/zy20170626/zy20170626/multi_hist_test.svg"))
+            self.view1.showNormal()
+            
+        elif (self.figure_type=="箱形图"):
+            labels=self.feature_names
+#            colors=['tomato','tan','peru','teal','olive']
+            graph.boxplot(self.data_nodup,labels)
+            self.view2=QtWebKitWidgets.QWebView()
+            self.view2.setWindowTitle(self.figure_type)
+            self.view2.load(QtCore.QUrl("file:///C:/Users/zy/python_practice/QT/zy20170626/zy20170626/boxplot.png"))
+            self.view2.showNormal()
 
         
         
@@ -248,7 +260,7 @@ class Data_Wash():
         
         
 class Graph():
-    def multi_hist(self,x,n_bins,labels,colors):
+    def multi_hist(self,x,n_bins,labels,colors,num_invalid,num_duplicated,num_valid):
         num_ax=len(x.columns)
         nrows=2
         ncols=3
@@ -278,15 +290,23 @@ class Graph():
             a[i].hist([x.iloc[:,i-1]],n_bins,color=colors[i-1])#https://stackoverflow.com/questions/19523563/python-typeerror-int-object-is-not-iterable
             a[i].set_title(labels[i-1])
         lab='异常数据','重复数据','有效数据'
-        sizes=[0,1459,7211]
+        sizes=[num_invalid,num_duplicated,num_valid]
         explode = (0.1, 0.1, 0.1)
         a[0].pie(sizes, explode=explode, labels=lab, autopct='%1.1f%%',\
                  shadow=True, startangle=90,data=True)
         a[0].axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
         fig.tight_layout()
         plt.savefig("multi_hist_test.svg", format="svg")
-#        plt.show()        
-        
+        plt.clf()
+#        plt.show()   
+
+
+    def boxplot(self,x,labels):
+        minmax_scaler=preprocessing.MinMaxScaler().fit(x)
+        scaler_trans=minmax_scaler.transform(x)
+        plt.boxplot(np.array(scaler_trans),labels=labels,notch=True)        
+        plt.savefig("boxplot.png", format="png",dpi=300)
+        plt.clf()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
