@@ -128,8 +128,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         x=self.data_nodup[self.comboBox_X.currentText()]
         y=self.data_nodup[self.comboBox_Y.currentText()]
         r,p=DW.pearson(x,y)
-        self.textEdit_R2.setText(str('%.5f' % r))
-        self.textEdit_p_value.setText(str('%.5f' % p))
+        self.lineEdit_R2.setText(str('%.5f' % r))
+        self.lineEdit_p_value.setText(str('%.5f' % p))
         
     def add_head(self):
 #        qList = QtCore.QStringList(['a','b','c']) Qt5已经不支持，因为Qt是C++实现的，所以有List等概念的对象。但对于PyQt，因为Python本身支持List等，所以就没有这个对象了

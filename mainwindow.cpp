@@ -162,3 +162,16 @@ void MainWindow::on_radioButton_hist_clicked(bool checked)
 
     Data::figure=ui->radioButton_hist->text();
 }
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QFileDialog  *fileDialog = new QFileDialog(this);//创建一个QFileDialog对象，构造函数中的参数可以有所添加。
+    QString file = QFileDialog::getOpenFileName(this, tr("open file"), "C:/Users/zy/python_practice/QT/zy20170626/zy20170626",  tr("xlsxfile(*.xlsx);;xlsfile(*.xls)"));
+
+    QFileInfo fi=QFileInfo(file);
+    QString file_name=fi.fileName();
+    QString file_path=fi.absolutePath();
+    QMessageBox::about(this,"提示框","数据已经加载，可以进行后续计算");
+    ui->textEdit_Y->setText(file_name);
+    ui->textEdit_X->setText(file_path);
+}

@@ -43,6 +43,8 @@ private slots:
 
     void on_radioButton_hist_clicked(bool checked);
 
+    void on_actionOpen_triggered();
+
 private:
     Ui::MainWindow *ui;
 };
