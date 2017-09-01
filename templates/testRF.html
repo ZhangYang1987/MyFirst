@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %} 
+
+{% block content %}
+
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-2"><h4>随机森林</h4></div>
+	</div>
+<br>
+<br>
+	<div class="row">
+		<div class="col-md-4">{{ wtf.quick_form(form) }}</div>
+		<div class="col-md-4">实发功率：{{result}}</div>
+	</div>
+	
+<br>
+<br>
+	<div class="row">
+		<div class="col-md-4">实发功率：{{result}}</div>
+	<div>
+{% endblock %}
