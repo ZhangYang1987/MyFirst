@@ -26,9 +26,9 @@
 					  <th>标准差</th>
 					  <th>最小值</th>
 					  <th>最大值</th>
-					  <th>上四分位数</th>
-					  <th>中位数</th>
 					  <th>下四分位数</th>
+					  <th>中位数</th>
+					  <th>上四分位数</th>
 					  <th>离散系数</th>
 					  <th>峰度</th>
 					  <th>偏度</th>
@@ -36,6 +36,20 @@
 					</tr>
 				  </thead>
 				  <tbody>
+					<tr>
+					  <td>{{columns_name0}}</td>
+					  <td>{{s1_0}}</td>
+					  <td>{{s2_0}}</td>
+					  <td>{{s3_0}}</td>
+					  <td>{{s4_0}}</td>
+					  <td>{{s5_0}}</td>
+					  <td>{{s6_0}}</td>
+					  <td>{{s7_0}}</td>
+					  <td>{{s8_0}}</td>
+					  <td>{{s9_0}}</td>
+					  <td>{{s10_0}}</td>
+					  <td>{{s11_0}}</td>
+					</tr>
 					<tr>
 					  <td>{{columns_name1}}</td>
 					  <td>{{s1_1}}</td>
@@ -78,7 +92,7 @@
 					  <td>{{s10_3}}</td>
 					  <td>{{s11_3}}</td>
 					</tr>
-					<tr>
+						<tr>
 					  <td>{{columns_name4}}</td>
 					  <td>{{s1_4}}</td>
 					  <td>{{s2_4}}</td>
@@ -92,20 +106,6 @@
 					  <td>{{s10_4}}</td>
 					  <td>{{s11_4}}</td>
 					</tr>
-						<tr>
-					  <td>{{columns_name5}}</td>
-					  <td>{{s1_5}}</td>
-					  <td>{{s2_5}}</td>
-					  <td>{{s3_5}}</td>
-					  <td>{{s4_5}}</td>
-					  <td>{{s5_5}}</td>
-					  <td>{{s6_5}}</td>
-					  <td>{{s7_5}}</td>
-					  <td>{{s8_5}}</td>
-					  <td>{{s9_5}}</td>
-					  <td>{{s10_5}}</td>
-					  <td>{{s11_5}}</td>
-					</tr>
 				  </tbody>
 				</table>
 		</div>
@@ -115,7 +115,7 @@
 </div>
 </div>
 <div class="row">
-
+	<div class="col-md-4">
 <!--导航区-->
 <!--<ul class="nav nav-tabs" role="tablist">
 	<li role="presentation" class="active"><a href="#bar" role="tab" data-toggle="tab"> bar</a></li>
@@ -148,8 +148,13 @@
 				</select>
 		</div>
 	</form>-->
-		<div>{{ wtf.quick_form(form2) }}</div>
-   {{select_item}}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-8">{{ wtf.quick_form(form2) }}</div>
+		</div>
+		{{select_item}}
+	</div>
+   
 		
 		<div class="modal fade" id="myModal" >
 			<div class="modal-dialog">
@@ -160,11 +165,11 @@
 						
 					</div>
 						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-12">
-								
-								</div>
-							</div>
+							<!-- <div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+								<button type="button" class="btn btn-primary">提交更改</button>
+							</div> -->
+
 						</div>
 					</div>
 		</div>
@@ -176,6 +181,50 @@
 	<div class="tab-pane" id="box">...箱线图...</div>
 </div>
 <!--<iframe name="ss" width=100% height=300  SRC="bar.html" ></IFRAME>-->
+	</div>
+
+	<div class="col-md-4">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">单变量间相关性分析</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-6">
+						{{ wtf.quick_form(form3) }}
+						选择的因变量为：
+						{{Selected_X}}
+					</div>
+					<div class="col-md-6">
+						{{ wtf.quick_form(form4) }}
+						选择的自变量为：
+						{{Selected_Y}}
+						<form method="post">
+							{{form4.hidden_tag()}}
+							<select onchange=mysubmit()>
+								<option>{{form4.item3.choices[0][1]}}</option>
+								<option>{{form4.item3.choices[1][1]}}</option>
+							</select>
+						</form>
+					</div>
+				</div>
+				
+				<div class="row">
+					{{pearson}}
+					<form method="post">
+						{{form_pearson.hidden_tag()}}
+						
+						{{form_pearson.submit_pearson(class="btn btn-primary")}}
+					</form>
+				</div>
+				
+			</div>
+		</div>
+		
+	</div>
+
+	
+	
 </div>
 
 {% endblock %}
@@ -193,5 +242,21 @@ $("#open").click(function(){
 	$("#myModal").modal({show:true});
 })
 
+$('#myModal.modal-content').empty();
+$('#myModal').removeData('bs.modal').modal({
+remote:'xxx'})
 
+$(function() {
+    $('#myModal').modal('hide')
+});
+$(function() {
+    $('#myModal').on('hide.bs.modal',
+    function() {
+        alert('嘿，我听说您喜欢模态框...');
+    })
+});
+
+
+function mysubmit(){
+form4.submit3()}
 </script>
