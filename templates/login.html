@@ -9,5 +9,28 @@
     {% if error %}
         <h1 style="color:red">{{ error }}!</h1>
     {% endif %}
+	
+	<table id="table" class="mychar1-table"></table>
   </body>
 {%endblock%}
+
+<script type="text/javascript">
+$(function () {
+        $.ajax({
+            type: "post",
+            url: "http://localhost:5000/login",
+            dataType: 'JSON',
+            data: {
+                "ID": 1,
+				"Load_predict":87
+            },
+            success: function (data) {
+                console.log(data);
+                $("#content").html('访问成功：<br/>'+JSON.stringify(data));
+            },
+            error: function (xhr, status, statusText) {
+                $("#content").html('错误信息：<br/>xhr：' + JSON.stringify(xhr) + '<br/>status：' + status + '<br/>statusText：' + JSON.stringify(statusText));
+            }
+        });
+    });
+</script>

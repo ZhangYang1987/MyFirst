@@ -6,19 +6,57 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="panel panel-info">
-				<div class="panel-heading"><h3 class="panel-title">线性回归</h3></div>
+				<div class="panel-heading"><h3 class="panel-title">基础配置</h3></div>
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-6">
 							{{wtf.quick_form(form_multipleSelect)}}
-							<br>
+						</div>
+						<div class="col-md-6">
+							{{wtf.quick_form(form3)}}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
 							选择的自变量为：
 							<br>
 							{{multiple_selected}}
 						</div>
 						<div class="col-md-6">
-							{{wtf.quick_form(form3)}}
+							选择的因变量为：
+							{{single_selected}}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							{{wtf.quick_form(form_Train_Test)}}
+						</div>
+						<div class="col-md-6">
+							训练集样本数量：
 							<br>
+							{{train_sample_num}}
+							<br>
+							测试集样本数量：
+							<br>
+							{{test_sample_num}}
+							<br>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-6">
+			<div class="panel panel-info">
+				<div class="panel-heading"><h3 class="panel-title">线性回归</h3></div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-6">
+							选择的自变量为：
+							<br>
+							{{multiple_selected}}
+						</div>
+						<div class="col-md-6">
 							选择的因变量为：
 							{{single_selected}}
 							<br>
@@ -38,15 +76,6 @@
 				</div>
 			</div>
 		</div>
-		
-		<div class="col-md-6">
-			<div class="panel panel-info">
-				<div class="panel-heading"><h3 class="panel-title">多项式回归</h3></div>
-				<div class="panel-body">
-					
-				</div>
-			</div>
-		</div>
 	</div>
 
 	<div class="row">
@@ -56,15 +85,13 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-6">
-							{{wtf.quick_form(form_multipleSelect)}}
-							<br>
+							
 							选择的自变量为：
 							<br>
 							{{multiple_selected}}
 						</div>
 						<div class="col-md-6">
-							{{wtf.quick_form(form3)}}
-							<br>
+							
 							选择的因变量为：
 							{{single_selected}}
 						</div>
@@ -78,7 +105,7 @@
 						<div class="col-md-5">
 							计算用时：
 							<br>
-							{{time_span}}
+							{{time_span}}秒
 							<br>
 							SSE：
 							<br>
@@ -104,15 +131,27 @@
 						<div class="col-md-6">
 							计算用时：
 							<br>
-							{{time_span_RF}}
+							{{time_span_RF}}秒
 							<br>
-							R²：
+							训练集的R²：
 							<br>
-							{{R_RF}}
+							{{R_RF_train}}
 							<br>
-							R²：
+							{{feature_importances}}
 							<br>
-							{{R_GBDT}}
+							训练集的R²：
+							<br>
+							{{R_GBDT_train}}
+							<br>
+							<br>
+							<br>
+							测试集的R²：
+							<br>
+							{{R_RF_test}}
+							<br>
+							测试集的R²：
+							<br>
+							{{R_GBDT_test}}
 						</div>
 					</div>
 					

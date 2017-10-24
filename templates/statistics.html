@@ -36,7 +36,26 @@
 					</tr>
 				  </thead>
 				  <tbody>
+				  <!-- {{desc}} -->
+					{% for row in desc %}
 					<tr>
+						<td>{{ row.feature }}</td>
+						<td>{{ row.count }}</td>
+						<td>{{ row.mean }}</td>
+						<td>{{ row.std }}</td>
+						<td>{{ row.mn }}</td>
+						<td>{{ row.mx }}</td>
+						<td>{{ row.per25 }}</td>
+						<td>{{ row.per50 }}</td>
+						<td>{{ row.per75 }}</td>
+						<td>{{ row.cv }}</td>
+						<td>{{ row.kurtosis }}</td>
+						<td>{{ row.skewness }}</td>
+					</tr>
+					{% endfor %}
+
+				  
+<!-- 					<tr>
 					  <td>{{columns_name0}}</td>
 					  <td>{{s1_0}}</td>
 					  <td>{{s2_0}}</td>
@@ -105,7 +124,7 @@
 					  <td>{{s9_4}}</td>
 					  <td>{{s10_4}}</td>
 					  <td>{{s11_4}}</td>
-					</tr>
+					</tr> -->
 				  </tbody>
 				</table>
 		</div>
@@ -116,26 +135,27 @@
 </div>
 <div class="row">
 	<div class="col-md-4">
-<!--导航区-->
-<!--<ul class="nav nav-tabs" role="tablist">
-	<li role="presentation" class="active"><a href="#bar" role="tab" data-toggle="tab"> bar</a></li>
-	<li role="presentation" ><a href="#box" role="tab" data-toggle="tab">box </a></li>
-</ul>-->
-
-<!--面板区-->
-<!--<div>
-	<div role="tabpanel" class="tab-pane active" id="bar">...频率分布直方图...</div>
-	<div role="tabpanel" class="tab-pane" id="box">...箱线图...</div>
-</div>-->
-
-<!--导航区-->
-<UL class="nav nav-tabs" id="myTab">
-<li class="active"><a href="#bar" data-toggle="tab" > 频率分布直方图 </a></li>
-<li><a href="#box" data-toggle="tab" > 箱线图 </a></li>
-</ul>
-<!--面板区-->
-<div class="tab-content">
-	<div class="tab-pane active" id="bar">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">绘图区</h3>
+			</div>
+			<div class="panel-body">
+				<!--导航区-->
+			<UL class="nav nav-tabs" id="myTab">
+				<li class="active">
+					<a href="#hist" data-toggle="tab">
+						频率分布直方图
+					</a>
+				</li>
+				<li>
+					<a href="#box" data-toggle="tab">
+						箱线图
+					</a>
+				</li>
+			</ul>
+		<!--面板区-->
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade in active" id="hist">
 	<!--<form role="form" method="post" action="" method="post">
 		<div class="form-group">
 			<label for="name">选择列表</label>
@@ -148,39 +168,56 @@
 				</select>
 		</div>
 	</form>-->
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-8">{{ wtf.quick_form(form2) }}</div>
-		</div>
-		{{select_item}}
-	</div>
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-8">{{ wtf.quick_form(form2) }}</div>
+						</div>
+					{{select_item}}
+					</div>
    
 		
-		<div class="modal fade" id="myModal" >
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-						<h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
-						
-					</div>
+				<div class="modal fade" id="myModal" >
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+									<h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+							</div>
 						<div class="modal-body">
 							<!-- <div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 								<button type="button" class="btn btn-primary">提交更改</button>
 							</div> -->
-
+						</div>
 						</div>
 					</div>
-		</div>
-		</div>
-		<a class="btn btn-primary" href="{{'hist'}}" data-toggle="modal" data-target="#myModal"> 绘图 </a>
-	</div>
+				</div>
+					<a class="btn btn-primary" href="{{'hist'}}" data-toggle="modal" data-target="#myModal"> 绘图 </a>
+				</div>
 	
 	
-	<div class="tab-pane" id="box">...箱线图...</div>
-</div>
-<!--<iframe name="ss" width=100% height=300  SRC="bar.html" ></IFRAME>-->
+					<div class="tab-pane fade" id="box">
+					...箱线图...
+									<div class="modal fade" id="myModal2" >
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+									<h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+							</div>
+						<div class="modal-body">
+
+						</div>
+						</div>
+					</div>
+				</div>
+					<a class="btn btn-primary" href="{{'box'}}" data-toggle="modal" data-target="#myModal2"> 绘图 </a>
+					</div>
+			</div>
+			</div>
+		</div>
+		
+
 	</div>
 
 	<div class="col-md-4">

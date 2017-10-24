@@ -13,7 +13,10 @@
 
     {%- block styles %}<!--styles:层叠样式表定义-->
     <!-- Bootstrap -->
-    <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">
+    <!-- <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet"> -->
+	<!-- <link href="{{bootstrap_find_resource('css/bootstrap-table.css', cdn='bootstrap')}}" rel="stylesheet"> -->
+	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	<link href="/static/css/bootstrap-table.css" rel="stylesheet">
     {%- endblock styles %}
     {%- endblock head %}<!--head：<head>标签中的内容（结束）-->
   </head>
@@ -25,8 +28,12 @@
     {%- endblock content %}
 
     {% block scripts %}<!--scripts：文档底部的JavaScript声明-->
-    <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
-    <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>
+    <!-- <script src="{{bootstrap_find_resource('js/jquery.js', cdn='jquery')}}"></script> -->
+    <!-- <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script> -->
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/bootstrap.js"></script>	
+	<script src="/static/js/bootstrap-table.js"></script>
+	<!-- <script src="{{bootstrap_find_resource('js/bootstrap-table.js', cdn='bootstrap')}}"></script> -->
     {%- endblock scripts %}
     {%- endblock body %}<!--body：<body>标签中的内容（结束）-->
   </body>
